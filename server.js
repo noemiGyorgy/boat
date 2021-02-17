@@ -28,6 +28,12 @@ io.on("connection", (socket) => {
   io.emit("connection", "Connected to the position streamer.");
 });
 
-app.post("/upload", upload.single("csvfile"), csvWorker.uploadFile);
+const streamPosition = (positions) => {
+  positions.map((position) => io.emit("position", position));
+};
+
+app.post("/upload", upload.single("csvfile"), (req, res) =>
+  csvWorker.uploadFile(req, res, streamPosition)
+);
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
