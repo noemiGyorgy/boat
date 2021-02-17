@@ -28,12 +28,25 @@ io.on("connection", (socket) => {
   io.emit("connection", "Connected to the position streamer.");
 });
 
-const streamPosition = (positions) => {
-  positions.map((position) => io.emit("position", position));
+const emitPosition = (position, i, end) => {
+  const delay = 1000; // 1000ms = 1s = 1Hz
+
+  setTimeout(() => {
+    io.emit("position", position);
+    if (i >= end) {
+      io.emit("endOfTrack", "The journey is over.");
+    }
+  }, delay * i);
+};
+
+const streamPositions = (positions) => {
+  positions.forEach((position, i) =>
+    emitPosition(position, i, positions.length - 1)
+  );
 };
 
 app.post("/upload", upload.single("csvfile"), (req, res) =>
-  csvWorker.uploadFile(req, res, streamPosition)
+  csvWorker.uploadFile(req, res, streamPositions)
 );
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
