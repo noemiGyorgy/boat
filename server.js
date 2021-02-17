@@ -1,8 +1,8 @@
 const path = require("path");
 const http = require("http");
 const express = require("express");
-const upload = require("./app/config/multer.js");
-const csvWorker = require("./app/controllers/csvController.js");
+const upload = require("./app/config/multer-config.js");
+const csvWorker = require("./app/controllers/csv-controller.js");
 
 const port = 5000 || process.env.PORT;
 const app = express();
