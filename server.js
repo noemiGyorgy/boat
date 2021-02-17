@@ -1,6 +1,8 @@
 const path = require("path");
 const http = require("http");
 const express = require("express");
+const upload = require("./app/config/multer.js");
+const csvWorker = require("./app/controllers/csvController.js");
 
 const port = 5000 || process.env.PORT;
 const app = express();
@@ -22,16 +24,10 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 
-let position = "No data to show";
-
 io.on("connection", (socket) => {
   io.emit("connection", "Connected to the position streamer.");
-  io.emit("position", position);
 });
 
-app.post("/upload", (req, res) => {
-  res.send("Your input: " + req.body.userinput);
-  position = req.body.userinput;
-});
+app.post("/upload", upload.single("csvfile"), csvWorker.uploadFile);
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
