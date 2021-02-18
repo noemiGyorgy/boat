@@ -40,8 +40,9 @@ const emitPosition = (position, i, end) => {
 };
 
 const streamPositions = (positions) => {
+  let start = Date.now();
   positions.forEach((position, i) =>
-    emitPosition(position, i, positions.length - 1)
+    emitPosition({ ...position, start: start }, i, positions.length - 1)
   );
 };
 
