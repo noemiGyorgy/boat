@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
 });
 
 const emitPosition = (position, i, end) => {
-  const delay = 1000; // 1000ms = 1s = 1Hz
+  const delay = 100; // 1000ms = 1s = 1Hz
 
   setTimeout(() => {
     io.emit("position", position);
