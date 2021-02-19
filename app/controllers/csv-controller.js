@@ -7,5 +7,5 @@ exports.uploadFile = (req, res, streamPositions) => {
     .then((jsonArr) => {
       streamPositions(jsonArr);
     });
-  res.send("Redirect to the map...");
+  res.redirect(301, "http://localhost:3000");
 };

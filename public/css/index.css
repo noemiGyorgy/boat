@@ -1,0 +1,13 @@
+html,
+body,
+.container {
+  height: 100%;
+}
+html,
+body {
+  background-color: #f8f8f8;
+}
+
+.wrapper {
+  margin-top: 15%;
+}
