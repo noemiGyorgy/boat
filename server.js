@@ -1,3 +1,4 @@
+require("dotenv").config();
 const path = require("path");
 const http = require("http");
 const express = require("express");
@@ -10,7 +11,7 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 
 app.use((req, res, next) => {
-  const allowedOrigins = ["http://localhost:4000/", "http://localhost:5000/"];
+  const allowedOrigins = [process.env.SERVER, process.env.STREAMER];
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
@@ -29,7 +30,7 @@ io.on("connection", (socket) => {
 });
 
 const emitPosition = (position, i, end) => {
-  const delay = 100; // 1000ms = 1s = 1Hz
+  const delay = 1000; // 1000ms = 1s = 1Hz
 
   setTimeout(() => {
     io.emit("position", position);
@@ -40,10 +41,12 @@ const emitPosition = (position, i, end) => {
 };
 
 const streamPositions = (positions) => {
-  let start = Date.now();
-  positions.forEach((position, i) =>
-    emitPosition({ ...position, start: start }, i, positions.length - 1)
-  );
+  setTimeout(() => {
+    let start = Date.now();
+    positions.forEach((position, i) =>
+      emitPosition({ ...position, start: start }, i, positions.length - 1)
+    );
+  }, 3000);
 };
 
 app.post("/upload", upload.single("csvfile"), (req, res) =>
