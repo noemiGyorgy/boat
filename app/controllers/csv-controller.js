@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const csv = require("csvtojson");
 
 exports.uploadFile = (req, res, streamPositions) => {
@@ -7,5 +9,5 @@ exports.uploadFile = (req, res, streamPositions) => {
     .then((jsonArr) => {
       streamPositions(jsonArr);
     });
-  res.redirect(301, "http://localhost:3000");
+  res.redirect(301, process.env.FRONTEND);
 };
